@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Threading.Tasks;
 using Jellyfin.Data.Entities;
@@ -62,28 +62,11 @@ namespace Jellyfin.Server.Implementations.Events.Consumers.Session
                         CultureInfo.InvariantCulture,
                         _localizationManager.GetLocalizedString("UserStartedPlayingItemWithValues"),
                         user.Username,
-                        GetItemName(eventArgs.MediaInfo),
+                        Utils.GetItemName(eventArgs.MediaInfo),
                         eventArgs.DeviceName),
                     GetPlaybackNotificationType(eventArgs.MediaInfo.MediaType),
                     user.Id))
                 .ConfigureAwait(false);
-        }
-
-        private static string GetItemName(BaseItemDto item)
-        {
-            var name = item.Name;
-
-            if (!string.IsNullOrEmpty(item.SeriesName))
-            {
-                name = item.SeriesName + " - " + name;
-            }
-
-            if (item.Artists != null && item.Artists.Count > 0)
-            {
-                name = item.Artists[0] + " - " + name;
-            }
-
-            return name;
         }
 
         private static string GetPlaybackNotificationType(string mediaType)
